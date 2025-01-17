@@ -56,7 +56,7 @@
 
 1. Склонируйте репозиторий:
 
-    git clone https://github.com/ваш-репозиторий/crypto-tracker.git
+  git clone https://github.com/ваш-репозиторий/crypto-tracker.git
 
 2. Создайте и настройте файл .env (пример в .env.example):
 
@@ -64,8 +64,20 @@
 
 4. Установите зависимости:
 
-    go mod download
+  go mod download
 
 5. Запустите проект:
 
-    go run cmd/main.go
+  go run cmd/main.go
+
+## Инструкции по запуску с помощью Docker
+
+1. Настроить .env (как в Инструкции по установке)
+
+2. Собрать с запустить контейнеры:
+
+  docker-compose up --build
+
+3. Остановить контейнеры:
+
+  docker-compose down

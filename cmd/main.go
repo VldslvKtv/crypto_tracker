@@ -38,7 +38,9 @@ func main() {
 
 	storage, err := pg.New(&config)
 	if err != nil {
-		log.Error("failed to init storage")
+		log.Error("failed to init storage", slog.Attr{
+			Key:   "error",
+			Value: slog.StringValue(err.Error())})
 		os.Exit(1)
 	}
 	_ = storage
