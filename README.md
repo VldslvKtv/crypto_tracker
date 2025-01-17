@@ -58,7 +58,7 @@
 
 1. Склонируйте репозиторий:
 
-  git clone https://github.com/ваш-репозиторий/crypto-tracker.git
+  git clone https://github.com/VldslvKtv/crypto_tracker.git
 
 2. Создайте и настройте файл .env (пример в .env.example):
 
