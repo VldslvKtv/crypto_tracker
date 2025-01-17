@@ -18,12 +18,21 @@ type AddNewCoin interface {
 	AddCoin(ctx context.Context, coin models.Coin) error
 }
 
+// @Summary Добавить криптовалюту для отслеживания
+// @Description Добавляет криптовалюту в список отслеживаемых и начинает сбор данных о её цене.
+// @ID add-coin
+// @Accept json
+// @Produce json
+// @Param request body models.CoinRequest true "Данные для добавления криптовалюты"
+// @Success 200 {object} map[string]string "message: Currency added to watchlist"
+// @Failure 400 {object} map[string]string "error: Invalid request body"
+// @Failure 400 {object} map[string]string "error: Invalid coin"
+// @Failure 400 {object} map[string]string "error: Coin is already being tracked"
+// @Router /currency/add [post]
 func New(log *slog.Logger, apiURL string, apiKey string, addNewCoin AddNewCoin) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Парсим JSON
-		var req struct {
-			Coin string `json:"coin"`
-		}
+		var req models.CoinRequest
 		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 			log.Error("Failed to decode request body", "error", err)
 			w.WriteHeader(http.StatusBadRequest)

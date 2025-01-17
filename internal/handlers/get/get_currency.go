@@ -17,15 +17,24 @@ type PriceStorage interface {
 	GetPrice(ctx context.Context, coin string, timestamp int64) (models.Coin, error)
 }
 
+// @Summary Получить цену криптовалюты
+// @Description Возвращает цену криптовалюты на указанный timestamp.
+// @ID get-coin
+// @Accept json
+// @Produce json
+// @Param request body models.GetPriceRequest true "Данные для получения цены"
+// @Success 200 {object} models.Coin "Цена криптовалюты"
+// @Failure 400 {object} map[string]string "error: Invalid request body"
+// @Failure 400 {object} map[string]string "error: Validation failed: coin and timestamp are required"
+// @Failure 400 {object} map[string]string "error: Failed to get price"
+// @Failure 500 {object} map[string]string "error: Failed to get price"
+// @Router /currency/price [get]
 func New(log *slog.Logger, storage PriceStorage) http.HandlerFunc {
 	validate := validator.New() // Создаем экземпляр валидатора
 
 	return func(w http.ResponseWriter, r *http.Request) {
 		//Парсим JSON
-		var req struct {
-			Coin      string `json:"coin" validate:"required"`
-			Timestamp string `json:"timestamp" validate:"required"`
-		}
+		var req models.GetPriceRequest
 		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 			log.Error("Failed to decode request body", "error", err)
 			w.WriteHeader(http.StatusBadRequest)

@@ -12,10 +12,23 @@ import (
 	"os/signal"
 	"syscall"
 
+	_ "crypto_tracker/docs"
+
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	httpSwagger "github.com/swaggo/http-swagger"
 )
 
+// @title Crypto Tracker API
+// @version 1.0
+// @description API для отслеживания цен криптовалют.
+// @termsOfService http://swagger.io/terms/
+// @contact.name API Support
+// @contact.email support@cryptotracker.com
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+// @host localhost:8002
+// @BasePath /
 func main() {
 	config := config.MustLoad()
 	log := setupLogger(config.Env)
@@ -37,7 +50,7 @@ func main() {
 	router.Use(middleware.URLFormat)
 
 	// Swagger UI
-	// router.Get("/swagger/*", httpSwagger.WrapHandler)
+	router.Get("/swagger/*", httpSwagger.WrapHandler)
 
 	// Настройка роутинга
 	router.Post("/currency/add", add.New(log, config.ExtAPIUrl, config.APIKey, storage))

@@ -1,0 +1,139 @@
+basePath: /
+definitions:
+  models.Coin:
+    properties:
+      coin:
+        type: string
+      price:
+        type: number
+      timestamp:
+        type: integer
+    type: object
+  models.CoinRequest:
+    properties:
+      coin:
+        type: string
+    type: object
+  models.GetPriceRequest:
+    properties:
+      coin:
+        type: string
+      timestamp:
+        type: string
+    required:
+    - coin
+    - timestamp
+    type: object
+host: localhost:8002
+info:
+  contact:
+    email: support@cryptotracker.com
+    name: API Support
+  description: API для отслеживания цен криптовалют.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Crypto Tracker API
+  version: "1.0"
+paths:
+  /currency/add:
+    post:
+      consumes:
+      - application/json
+      description: Добавляет криптовалюту в список отслеживаемых и начинает сбор данных
+        о её цене.
+      operationId: add-coin
+      parameters:
+      - description: Данные для добавления криптовалюты
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.CoinRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'message: Currency added to watchlist'
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: 'error: Coin is already being tracked'
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Добавить криптовалюту для отслеживания
+  /currency/price:
+    get:
+      consumes:
+      - application/json
+      description: Возвращает цену криптовалюты на указанный timestamp.
+      operationId: get-coin
+      parameters:
+      - description: Данные для получения цены
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.GetPriceRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Цена криптовалюты
+          schema:
+            $ref: '#/definitions/models.Coin'
+        "400":
+          description: 'error: Failed to get price'
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: 'error: Failed to get price'
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Получить цену криптовалюты
+  /currency/remove:
+    post:
+      consumes:
+      - application/json
+      description: Удаляет криптовалюту из списка отслеживаемых и останавливает сбор
+        данных о её цене.
+      operationId: remove-coin
+      parameters:
+      - description: Данные для удаления криптовалюты
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.CoinRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'message: Currency removed from watchlist'
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: 'error: Coin field is required'
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: 'error: Coin is not tracked'
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Удалить криптовалюту из отслеживаемых
+swagger: "2.0"

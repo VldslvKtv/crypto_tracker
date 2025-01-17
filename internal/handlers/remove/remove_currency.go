@@ -1,6 +1,7 @@
 package remove
 
 import (
+	"crypto_tracker/internal/models"
 	"crypto_tracker/internal/tracker"
 	"encoding/json"
 	"log/slog"
@@ -10,12 +11,21 @@ import (
 	"github.com/go-chi/render"
 )
 
+// @Summary Удалить криптовалюту из отслеживаемых
+// @Description Удаляет криптовалюту из списка отслеживаемых и останавливает сбор данных о её цене.
+// @ID remove-coin
+// @Accept json
+// @Produce json
+// @Param request body models.CoinRequest true "Данные для удаления криптовалюты"
+// @Success 200 {object} map[string]string "message: Currency removed from watchlist"
+// @Failure 400 {object} map[string]string "error: Invalid request body"
+// @Failure 400 {object} map[string]string "error: Coin field is required"
+// @Failure 404 {object} map[string]string "error: Coin is not tracked"
+// @Router /currency/remove [post]
 func New(log *slog.Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// Парсим JSON
-		var req struct {
-			Coin string `json:"coin"`
-		}
+		var req models.CoinRequest
 		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 			log.Error("Failed to decode request body", "error", err)
 			w.WriteHeader(http.StatusBadRequest)
