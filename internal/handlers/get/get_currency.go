@@ -18,7 +18,7 @@ type PriceStorage interface {
 }
 
 // @Summary Получить цену криптовалюты
-// @Description Возвращает цену криптовалюты на указанный timestamp.
+// @Description Возвращает цену криптовалюты на указанный timestamp (timestamp в миллисекундах).
 // @ID get-coin
 // @Accept json
 // @Produce json

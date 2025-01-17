@@ -71,7 +71,8 @@ paths:
     get:
       consumes:
       - application/json
-      description: Возвращает цену криптовалюты на указанный timestamp.
+      description: Возвращает цену криптовалюты на указанный timestamp (timestamp
+        в миллисекундах).
       operationId: get-coin
       parameters:
       - description: Данные для получения цены

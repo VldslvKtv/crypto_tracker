@@ -53,13 +53,13 @@ func New(log *slog.Logger) http.HandlerFunc {
 
 		tracker.TrackedMutex.Unlock()
 
-		stopPriceCollector(req.Coin)
+		stopPriceCollector(log, req.Coin)
 
 		render.JSON(w, r, map[string]string{"message": "Currency removed from watchlist"})
 	}
 }
 
-func stopPriceCollector(coin string) {
+func stopPriceCollector(log *slog.Logger, coin string) {
 	// Блокируем доступ к мапе
 	tracker.StopMutex.Lock()
 	defer tracker.StopMutex.Unlock()
@@ -68,7 +68,7 @@ func stopPriceCollector(coin string) {
 	if stopChan, ok := tracker.StopChannels[coin]; ok {
 		close(stopChan)                    // Отправляем сигнал остановки
 		delete(tracker.StopChannels, coin) // Удаляем канал из мапы
-		slog.Info("Stopped price collection for coin", "coin", coin)
-		slog.Info("Map: ", "map", coin)
+		log.Info("Stopped price collection for coin", "coin", coin)
+		log.Info("Map: ", "map", coin)
 	}
 }

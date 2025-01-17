@@ -69,7 +69,7 @@ const docTemplate = `{
         },
         "/currency/price": {
             "get": {
-                "description": "Возвращает цену криптовалюты на указанный timestamp.",
+                "description": "Возвращает цену криптовалюты на указанный timestamp (timestamp в миллисекундах).",
                 "consumes": [
                     "application/json"
                 ],

@@ -14,6 +14,10 @@ import (
 	"github.com/go-chi/render"
 )
 
+var (
+	N = 10 // Сколько секунд ждать перед следующим считыванием валюты
+)
+
 type AddNewCoin interface {
 	AddCoin(ctx context.Context, coin models.Coin) error
 }
@@ -100,7 +104,7 @@ func startPriceCollector(ctx context.Context, log *slog.Logger, addNewCoin AddNe
 		tracker.TrackedMutex.Unlock()
 	}()
 
-	ticker := time.NewTicker(10 * time.Second) // Интервал сбора данных
+	ticker := time.NewTicker(time.Duration(N) * time.Second) // Интервал сбора данных
 	defer ticker.Stop()
 
 	for {
