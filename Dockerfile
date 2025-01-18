@@ -14,9 +14,7 @@ RUN go mod download
 COPY . .
 
 # Собираем приложение
-RUN CGO_ENABLED=0 GOOS=linux go build -o crypto_tracker ./cmd/main.go
-
-RUN ls -la /app
+RUN go build -o crypto_tracker ./cmd/main.go
 
 # Используем минимальный образ Alpine для финального контейнера
 FROM alpine:latest

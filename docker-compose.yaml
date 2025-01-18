@@ -5,32 +5,20 @@ services:
     build: .
     ports:
       - "8002:8002"
-    env_file: 
+    env_file:
       - .env
     depends_on:
       - db
-    volumes:
-      - .:/app
-    networks:
-      - default
-
   db:
     image: postgres:15-alpine
     environment:
-    - POSTGRES_HOST=db
-    - POSTGRES_USER=postgres
+    - POSTGRES_USER=postgres # Указать свои настройки
     - POSTGRES_PASSWORD=postgres
     - POSTGRES_DB=crypto_tracker
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    networks:
-      - default
-
+   
 volumes:
-  postgres_data:
-
-networks:
-  default:
-    name: crypto_tracker_network
+  postgres_data: {}
